@@ -33,4 +33,6 @@ To genertae the features of correspodning PDBs, you need to install the followin
 2. The datasets used in this study (Train_335, Test_60, Test_315 and UBtest_31) are stored in ./Dataset in fasta format.  
 3. The distance maps(L * L) and normalized feature matrixes PSSM(L * 20), HMM(L * 20), DSSP(L * 14), and Atomic Features(L * 7) are stored in ./Feature.
 4. The pre-trained E(Q)AGNN-PPIS full model can be found under ./Saved_Models
+
 :star:The training and evaluation codes can be found in [here](https://github.com/ainimesh/EQAGNN-PPIS).
+
