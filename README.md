@@ -36,7 +36,7 @@ To genertae the features of correspodning PDBs, you need to install the followin
 ### :file_folder: Dataset Structure
 
 1. :books: **Datasets:** The datasets used in this study (Train_335-1, Test_60_0, Test_315-28 and UBtest_31-6) are stored in `./Dataset` in fasta format.
-2. :bar_chart: **Features:** The distance maps(L × L) and normalized feature matrices PSSM(L × 20), HMM(L × 20), DSSP(L × 14), and Atomic Features(L × 7) are stored in `./Feature`.
+2. :bar_chart: **Features:** The distance maps(L × L) and normalized feature matrices PSSM(L × 20), HMM(L × 20), DSSP(L × 14), and Atomic Features(L × 7) are stored in `./Features`.
 3. :gem: **Pre-trained Models:** The pre-trained E(Q)AGNN-PPIS full model can be found under `./Saved_Models`
 
 ### :star: Getting Started
