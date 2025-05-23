@@ -35,10 +35,28 @@ To genertae the features of correspodning PDBs, you need to install the followin
 
 ### :file_folder: Dataset Structure
 
-1. :books: **Datasets:** The datasets used in this study (Train_335, Test_60, Test_315 and UBtest_31) are stored in `./Dataset` in fasta format.
+1. :books: **Datasets:** The datasets used in this study (Train_335-1, Test_60_0, Test_315-28 and UBtest_31-6) are stored in `./Dataset` in fasta format.
 2. :bar_chart: **Features:** The distance maps(L × L) and normalized feature matrices PSSM(L × 20), HMM(L × 20), DSSP(L × 14), and Atomic Features(L × 7) are stored in `./Feature`.
 3. :gem: **Pre-trained Models:** The pre-trained E(Q)AGNN-PPIS full model can be found under `./Saved_Models`
 
 ### :star: Getting Started
 
 The training and evaluation codes can be found in [here](https://github.com/ainimesh/EQAGNN-PPIS).
+
+
+# :page_facing_up: citation
+
+Citation:  
+```bibtex
+@article{animesh2024q,
+  title={E (Q) AGNN-PPIS: Attention Enhanced Equivariant Graph Neural Network for Protein-Protein Interaction Site Prediction},
+  author={Animesh and Suvvada, Rishi and Bhowmick, Plaban Kumar and Mitra, Pralay},
+  journal={bioRxiv},
+  pages={2024--10},
+  year={2024},
+  publisher={Cold Spring Harbor Laboratory}
+}
+```
+
+Contact:  
+Animesh (animesh.sachan24794@kgpian.iitkgp.ac.in)
