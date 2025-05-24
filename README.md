@@ -14,7 +14,6 @@ This is the official implementation of **E(Q)AGNN-PPIS: Attention Enhanced Equiv
 - [Training](#-training)
 - [Evaluation](#-evaluation)
 - [Pre-trained Models](#-pre-trained-models)
-- [Results](#-results)
 - [Citation](#-citation)
 - [Contact](#-contact)
 
