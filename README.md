@@ -46,7 +46,7 @@ The training and evaluation codes can be found in [here](https://github.com/aini
 
 # :page_facing_up: citation
 
-Citation:  
+You can cite our work as:  
 ```bibtex
 @article{animesh2024q,
   title={E(Q)AGNN-PPIS: Attention Enhanced Equivariant Graph Neural Network for Protein-Protein Interaction Site Prediction},
