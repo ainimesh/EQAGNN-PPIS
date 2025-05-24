@@ -9,7 +9,7 @@ import os, csv
 from utils import processing_fasta_file
 from data import ProDataset
 from evalution import compute_roc, compute_aupr, compute_mcc, micro_score, acc_score, compute_performance
-from main.method.model import EQAGNN_Model, GVPGNNModel
+from main.method.model import EQAGNN_Model
 
 
 
@@ -59,32 +59,26 @@ def worker_init_fn(worker_id):
     return
 
 def create_data_loader(threshold = 14, batch_size = 1, num_workers = 2, 
-                    which_data = 'Train_332.fa' , res_type = 'train_pdb_332_SC', adj_type = '335_train_SC', shuffle = True):
+                    which_data = 'Train_332.fa' , res_type = 'train_pdb_332_SC', adj_type = '335_train_SC',  FP='./main/Feature/', shuffle = True):
     
-    data_path = f'./Dataset/{which_data}'
+    data_path = f'./main/Dataset/{which_data}'
     pdb_ids, sequence, labels, input_files_train = processing_fasta_file(data_path)
 
-    RPP = f'./Res_positions/{res_type}_res_pos.pkl'
-    AP = f'./Input_adj/Adj_matrix_{adj_type}'
+    RPP = f'./main/Res_positions/{res_type}_res_pos.pkl'
+    AP = f'./main/Input_adj/Adj_matrix_{adj_type}'
     
-    dataset = ProDataset(pdb_ids, sequence, labels, threshold = threshold, Res_Position_Path= RPP, Adj_path=AP,
+    dataset = ProDataset(pdb_ids, sequence, labels, threshold = threshold, Res_Position_Path= RPP, Adj_path=AP, Feat_path=FP,
                 seq = False, pbert = False, pstruct = False, patom = False, all_feat = True)
     data_loader = DataLoader(dataset=dataset, batch_size = batch_size, shuffle=shuffle, num_workers=num_workers, worker_init_fn=worker_init_fn)
     
     return data_loader
 
-
-
-
-
 # Set the device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# device = torch.device('cpu')
 print(f"Using device: {device}")
 
 
-
-
+#############################--------Training ---------------#################################
 def train_epoch(model, dataloader, optimizer, device, epoch, all_epochs, print_freq=100):
     batch_time = AverageMeter()
     losses = AverageMeter()
@@ -158,13 +152,8 @@ def evaluate(model, dataloader, device, print_freq=10, is_test=True):
                     'Loss %.4f (%.4f)' % (losses.val, losses.avg),
                 ])
                 print(res)
-
-
-            # val_loss += loss.item()
             y_true.append(batch.y.cpu().numpy())
             y_pred.append(out.argmax(dim=1).cpu().numpy())
-            # print(batch.y.cpu().numpy())
-            # print(out.argmax(dim=1).cpu().numpy())
 
     y_true = np.concatenate(y_true, axis=0)
     y_pred = np.concatenate(y_pred, axis=0)
@@ -186,20 +175,9 @@ def train(model, num_epochs, train_dataloader = None, val_dataloader = None, ver
 
     # Adam
     optimizer = torch.optim.Adam(model.parameters(), lr=0.0005)
-    
-
-
-    # AdamW
-    # optimizer = torch.optim.AdamW(model.parameters(), lr=0.0005, weight_decay=5e-5)
 
     #  ReduceLROnPlateau scheduler
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.9, patience=2, min_lr=0.00001)
-    
-    #  cosine annealing learning rate scheduler
-    # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=num_epochs, eta_min=0.00001)
-
-    # scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=1, eta_min=0.00001)
-
 
     if not os.path.exists('gvp_model_trained'):
         os.makedirs('gvp_model_trained')
@@ -254,7 +232,7 @@ def train(model, num_epochs, train_dataloader = None, val_dataloader = None, ver
 if __name__ == '__main__':
 
     # set seed
-    seed_everything(seed=3) # to ensure reproducibility
+    seed_everything(seed=0) # to ensure reproducibility
 
     # creating dataloaders
 
@@ -262,16 +240,15 @@ if __name__ == '__main__':
                                         which_data = 'Train_332.fa' , res_type = 'train_pdb_332_CA', 
                                         adj_type = '335_train_CA', shuffle = True)
     
-    test_loader_315 = create_data_loader(threshold = 14, batch_size = 1, num_workers = 2, 
-                                        which_data = 'Test_315.fa' , res_type = 'test_pdb_315_CA', 
-                                        adj_type = '315_test_CA', shuffle = False)
+    # test_loader_315 = create_data_loader(threshold = 14, batch_size = 1, num_workers = 2, 
+    #                                     which_data = 'Test_315.fa' , res_type = 'test_pdb_315_CA', 
+    #                                     adj_type = '315_test_CA', shuffle = False)
 
+    test_loader_60 = create_data_loader(threshold = 14, batch_size = 1, num_workers = 2, 
+                                        which_data = 'Test_60.fa' , res_type = 'test_pdb_60_CA', 
+                                        adj_type = '60_test_CA', shuffle = False)
 
     # Set model
-    model_name = "gvp_att"
-    model_ = {
-        "gvp": GVPGNNModel,
-        "gvp_att": GVP_AAMPModel,
-    }[model_name](num_layers=8, in_dim=62, out_dim=2, s_dim=62, s_dim_edge=8, equivariant_pred = False)
+    model = EQAGNN_Model(num_layers=8, in_dim=62, out_dim=2, s_dim=62, s_dim_edge=8, equivariant_pred = False)
 
-    train(model_, train_dataloader = train_loader, val_dataloader = test_loader_315, num_epochs = 50, verbose = True, device = device)
+    train(model, train_dataloader = train_loader, val_dataloader = test_loader_60, num_epochs = 50, verbose = True, device = device)

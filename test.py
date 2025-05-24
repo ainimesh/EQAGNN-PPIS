@@ -126,7 +126,7 @@ if __name__ == '__main__':
     model = EQAGNN_Model(num_layers=8, in_dim=62, out_dim=2, s_dim=62, s_dim_edge=8, equivariant_pred = False)
 
     #Loading saved models
-    saved_model_paths = ['gvp_model_trained/saved_models/best-model-26.pt','gvp_model_trained/best_GVP_AAMPModel_epoch38_test_315.pt','gvp_model_trained/best_GVP_AAMPModel_epoch40_test_315_seed_38.pt']
+    saved_model_paths = ['model_trained/saved_models/Best_EQAGNNModel_test_60.pt','model_trained/saved_models/Best_EQAGNNModel_test_315_&_60.pt','model_trained/saved_models/Best_EQAGNNModel_Ubtest.pt']
 
     model.load_state_dict(torch.load(saved_model_paths[0]))
     model.to(device)
