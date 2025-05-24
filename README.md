@@ -43,6 +43,24 @@ To genertae the features of correspodning PDBs, you need to install the followin
 
 The training and evaluation codes can be found in [here](https://github.com/ainimesh/EQAGNN-PPIS).
 
+### :rocket: How to Run Test Files for Reproduction
+
+**Step 1:** Navigate to project root
+```bash
+cd /path/to/EQAGNN-PPIS
+```
+
+**Step 2:** Run test script with your chosen dataset
+```bash
+# For Test_60 dataset
+python test.py --dataset test_60
+
+# For Test_315 dataset  
+python test.py --dataset test_315
+
+# For UBtest_31 dataset
+python test.py --dataset ubtest_31
+```
 
 # :page_facing_up: citation
 
