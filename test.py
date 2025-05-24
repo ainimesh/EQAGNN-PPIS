@@ -9,7 +9,7 @@ import torch.nn.functional as F
 
 # Imporing for performace computation
 from evalution import compute_roc, compute_aupr, compute_mcc, micro_score, acc_score, compute_performance
-from main.method.model import GVP_AAMPModel, GVPGNNModel
+from main.method.model import EQAGNN_Model
 
 class AverageMeter(object):
     """
@@ -70,7 +70,6 @@ def create_data_loader(threshold = 14, batch_size = 1, num_workers = 2,
 
 # Set the device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-# device = torch.device('cpu')
 print(f"Using device: {device}")
 
 def evaluate(model, dataloader, device, print_freq=10, is_test=True):
@@ -104,12 +103,8 @@ def evaluate(model, dataloader, device, print_freq=10, is_test=True):
                 ])
                 print(res)
 
-
-            # val_loss += loss.item()
             y_true.append(batch.y.cpu().numpy())
             y_pred.append(out.argmax(dim=1).cpu().numpy())
-            # print(batch.y.cpu().numpy())
-            # print(out.argmax(dim=1).cpu().numpy())
 
     y_true = np.concatenate(y_true, axis=0)
     y_pred = np.concatenate(y_pred, axis=0)
@@ -128,14 +123,11 @@ if __name__ == '__main__':
     seed_everything(seed=0) # to ensure reproducibility
 
     # Set model
-    # Set model
+    model = EQAGNN_Model(num_layers=8, in_dim=62, out_dim=2, s_dim=62, s_dim_edge=8, equivariant_pred = False)
+
     #Loading saved models
     saved_model_paths = ['gvp_model_trained/saved_models/best-model-26.pt','gvp_model_trained/best_GVP_AAMPModel_epoch38_test_315.pt','gvp_model_trained/best_GVP_AAMPModel_epoch40_test_315_seed_38.pt']
-    model_name = "gvp_att"
-    model = {
-        "gvp": GVPGNNModel,
-        "gvp_att": GVP_AAMPModel,
-    }[model_name](num_layers=8, in_dim=62, out_dim=2, s_dim=62, s_dim_edge=8, equivariant_pred = False)
+
     model.load_state_dict(torch.load(saved_model_paths[0]))
     model.to(device)
 
@@ -154,11 +146,7 @@ if __name__ == '__main__':
                                         which_data = 'Test_60.fa' , res_type = 'test_pdb_60_CA', 
                                         adj_type = '60_test_CA', shuffle = False)
     
-    # test_loader_120 = create_data_loader(threshold = 14, batch_size = 1, num_workers = 2, 
-    #                                     which_data = 'Test_120.fa' , res_type = 'test_pdb_120_CA', 
-    #                                     adj_type = '120_test_CA',  FP='./Feature/test_120/' , shuffle = False)
 
     _, valid_loss, acc, f_max, p_max, r_max, auc, aupr, t_max, mcc = evaluate(model, test_loader_60, device, is_test=True)
-
     print(f"Test Loss: {valid_loss:.4f}, Test Accuracy: {acc:.4f}, Test F1: {f_max:.4f}, Test MCC: {mcc:.4f}, Test AUPRC: {aupr:.4f}, Test AUC: {auc:.4f}, Test Precision: {p_max:.4f}, Test Recall: {r_max:.4f}")
     print()

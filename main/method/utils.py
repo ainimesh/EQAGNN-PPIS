@@ -1,3 +1,8 @@
+###########################################################################################
+# Authors: Animesh
+# This program is distributed under the MIT License (see MIT.md)
+###########################################################################################
+
 import torch
 from .radial import BesselBasis, PolynomialCutoff
 
@@ -11,8 +16,8 @@ class RadialEmbeddingBlock(torch.nn.Module):
         self.out_dim = num_bessel
 
     def forward(
-        self, edge_lengths: torch.Tensor,  # [n_edges, 1]
+        self, edge_lengths: torch.Tensor
     ):
-        bessel = self.bessel_fn(edge_lengths)  # [n_edges, n_basis]
-        cutoff = self.cutoff_fn(edge_lengths)  # [n_edges, 1]
-        return bessel * cutoff  # [n_edges, n_basis]
+        bessel = self.bessel_fn(edge_lengths)  
+        cutoff = self.cutoff_fn(edge_lengths) 
+        return bessel * cutoff 

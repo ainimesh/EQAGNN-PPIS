@@ -1,12 +1,9 @@
 ###########################################################################################
-# Implementation of Geometric Vector Perceptron layers
-#
-# Papers:
-# (1) Learning from Protein Structure with Geometric Vector Perceptrons,
-#     by B Jing, S Eismann, P Suriana, RJL Townshend, and RO Dror
-# (2) Equivariant Graph Neural Networks for 3D Macromolecular Structure,
-#     by B Jing, S Eismann, P Soni, and RO Dror
-#
+
+#Author: Animesh
+
+# Acknowledgement
+# Part of the code is taken from the implementation of Geometric Vector Perceptron layers
 # Orginal repository: https://github.com/drorlab/gvp-pytorch
 ###########################################################################################
 
@@ -15,7 +12,7 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 import torch_scatter
-from torch_geometric.nn import MessagePassing, AttentionalAggregation
+from torch_geometric.nn import MessagePassing
 from torch_scatter import scatter
 from torch_geometric.utils import to_dense_adj
 
@@ -58,7 +55,7 @@ def randn(n, dims, device="cpu"):
     :param dims: tuple of dimensions (n_scalar, n_vector)
 
     :return: (s, V) with s.shape = (n, n_scalar) and
-             V.shape = (n, n_vector, 3)
+            V.shape = (n, n_vector, 3)
     """
     return torch.randn(n, dims[0], device=device), torch.randn(
         n, dims[1], 3, device=device
@@ -142,9 +139,9 @@ class GVP(nn.Module):
     def forward(self, x):
         """
         :param x: tuple (s, V) of `torch.Tensor`,
-                  or (if vectors_in is 0), a single `torch.Tensor`
+                or (if vectors_in is 0), a single `torch.Tensor`
         :return: tuple (s, V) of `torch.Tensor`,
-                 or (if vectors_out is 0), a single `torch.Tensor`
+                or (if vectors_out is 0), a single `torch.Tensor`
         """
         if self.vi:
             s, v = x
@@ -244,22 +241,6 @@ class LayerNorm(nn.Module):
         vn = torch.sqrt(torch.mean(vn, dim=-2, keepdim=True))
         return self.scalar_norm(s), v / vn
 
-    # def __init__(self, dims):
-    #     super(LayerNorm, self).__init__()
-    #     self.s, self.v = dims
-    #     self.gamma = torch.nn.Parameter(torch.tensor(1.0))
-    #     self.beta = torch.nn.Parameter(torch.tensor(0.0))
-
-    # def forward (self,x):
-    #     if not self.v:
-    #         x_cap = (x - torch.mean(x))/torch.std(x) 
-    #         return self.gamma * x_cap + self.beta
-    #     s,v = x
-    #     s_cap = (s - torch.mean(s))/torch.std(s)
-    #     v_cap = (v - torch.mean(v))/torch.std(v)
-
-    #     return self.gamma * s + self.beta, self.gamma*v+self.beta
-
 
 class GVPConv(MessagePassing):
     """
@@ -276,7 +257,7 @@ class GVPConv(MessagePassing):
     :param n_layers: number of GVPs in the message function
     :param module_list: preconstructed message function, overrides n_layers
     :param aggr: should be "add" if some incoming edges are masked, as in
-                 a masked autoregressive decoder architecture, otherwise "mean"
+                a masked autoregressive decoder architecture, otherwise "mean"
     :param activations: tuple of functions (scalar_act, vector_act) to use in GVPs
     :param vector_gate: whether to use vector gating.
                         (vector_act will be used as sigma^+ in vector gating if `True`)
@@ -294,7 +275,6 @@ class GVPConv(MessagePassing):
         vector_gate=True,
     ):
         super(GVPConv, self).__init__(aggr=aggr)
-        #super(GVPConv, self).__init__(aggr=aggr.AttentionalAggregation())
         self.si, self.vi = in_dims
         self.so, self.vo = out_dims
         self.se, self.ve = edge_dims
@@ -360,7 +340,7 @@ class GVPConv_att(MessagePassing):
     :param n_layers: number of GVPs in the message function
     :param module_list: preconstructed message function, overrides n_layers
     :param aggr: should be "add" if some incoming edges are masked, as in
-                 a masked autoregressive decoder architecture, otherwise "mean"
+                a masked autoregressive decoder architecture, otherwise "mean"
     :param activations: tuple of functions (scalar_act, vector_act) to use in GVPs
     :param vector_gate: whether to use vector gating.
                         (vector_act will be used as sigma^+ in vector gating if `True`)
@@ -378,7 +358,6 @@ class GVPConv_att(MessagePassing):
         vector_gate=True,
     ):
         super(GVPConv_att, self).__init__(aggr=aggr)
-        #super(GVPConv, self).__init__(aggr=aggr.AttentionalAggregation())
         self.si, self.vi = in_dims
         self.so, self.vo = out_dims
         self.se, self.ve = edge_dims
@@ -408,7 +387,7 @@ class GVPConv_att(MessagePassing):
         self.n_heads = 1
         self.n_hidden = 62
         self.attn = nn.Linear(self.n_hidden * 2, 1, bias=False)
-        self.activation = nn.LeakyReLU()#negative_slope=leaky_relu_negative_slope)
+        self.activation = nn.LeakyReLU()
         self.softmax = nn.Softmax(dim=1)
         self.dropout = nn.Dropout(0.1)
         self.adj = None
@@ -440,8 +419,6 @@ class GVPConv_att(MessagePassing):
         v_i = v_i.view(v_i.shape[0], v_i.shape[1] // 3, 3)
         message = tuple_cat((s_j, v_j), edge_attr, (s_i, v_i))
         message = self.message_func(message)
-        #print(edge_attr,s_i.shape)
-        # print(message[1].shape)
         return _merge(*message)
     
     def aggregate(self, inputs, index):
@@ -463,22 +440,6 @@ class GVPConv_att(MessagePassing):
         a = e.mean(dim=2)
         # print(a.shape)
         attn_res = self.softmax(a)
-        #a = self.dropout(a)
-        # print(a.shape)
-        # attn_res = torch.einsum('ijh,jhf->ihf', a, g)
-        # print(attn_res.shape)
-        # attn_res = attn_res.mean(dim=1)
-        # print(attn_res.shape)
-        # #attn_res = attn_res.squeeze(-1)
-        # print(attn_res.shape)
-
-
-        # att_weights = [[0]]*self.edge_index.shape[1]
-        # for k in range(self.edge_index.shape[1]):
-        #   i = self.edge_index[0][k]
-        #   j = self.edge_index[1][k]
-        #   #print(k,i,j)
-        #   att_weights[k][0] = attn_res[j][i]
         idx = self.edge_index
         idx = torch.flip(idx, [0])
         idx = idx.T
@@ -488,10 +449,6 @@ class GVPConv_att(MessagePassing):
         msgs_aggr = torch.mul(torch.Tensor(att_weights),msgs)
         h_prime = scatter(msgs_aggr, index, dim=self.node_dim, reduce='add')
         return h_prime
-
-        # msg_aggr = scatter(msgs, index, dim=self.node_dim, reduce=self.aggr)
-        # return msg_aggr
-        
 
 
 
@@ -531,16 +488,6 @@ class GVPConvLayer(nn.Module):
         residual=True,
     ):
         super(GVPConvLayer, self).__init__()
-        # self.conv = GVPConv_att(
-        #     node_dims,
-        #     node_dims,
-        #     edge_dims,
-        #     n_message,
-        #     #aggr= AttentionalAggregation(gate_nn = nn.Sequential(nn.Linear(1 * 62 , 1))),
-        #     #aggr = "add" if autoregressive else "mean",
-        #     activations=activations,
-        #     vector_gate=vector_gate,
-        # )
         self.conv = GVPConv(
             node_dims,
             node_dims,
@@ -622,7 +569,7 @@ class GVPConvLayer(nn.Module):
     
 
 
-class GVPConvLayer_att(nn.Module):
+class AAMP_Layer(nn.Module):
     """
     Full graph convolution / message passing layer with
     Geometric Vector Perceptrons. Residually updates node embeddings with
@@ -656,14 +603,12 @@ class GVPConvLayer_att(nn.Module):
         vector_gate=True,
         residual=True,
     ):
-        super(GVPConvLayer_att, self).__init__()
+        super(AAMP_Layer, self).__init__()
         self.conv = GVPConv_att(
             node_dims,
             node_dims,
             edge_dims,
             n_message,
-            #aggr= AttentionalAggregation(gate_nn = nn.Sequential(nn.Linear(1 * 62 , 1))),
-            #aggr = "add" if autoregressive else "mean",
             activations=activations,
             vector_gate=vector_gate,
         )

@@ -1,19 +1,15 @@
 import numpy as np
 import torch
-import torch_geometric
-from data_gvp import ProDataset
-from utils import processing_fasta_file
 from torch_geometric.loader import DataLoader
 import time, random
 import torch.nn.functional as F
 from tqdm import tqdm
-import os
-import csv
+import os, csv
 
-from torch.optim.lr_scheduler import CosineAnnealingLR
-# Imporing for performace computation
+from utils import processing_fasta_file
+from data import ProDataset
 from evalution import compute_roc, compute_aupr, compute_mcc, micro_score, acc_score, compute_performance
-from GVP_AAMP.method.model import GVP_AAMPModel, GVPGNNModel
+from main.method.model import EQAGNN_Model, GVPGNNModel
 
 
 
