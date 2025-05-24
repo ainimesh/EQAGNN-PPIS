@@ -78,11 +78,6 @@ python test.py --dataset test_60
 # Test on Test_315 dataset  
 python test.py --dataset test_315
 
-# Test on UBtest dataset
-python test.py --dataset ubtest
-
-# Test on all datasets
-python test.py --dataset all --use_default_models
 ```
 
 ### Training from Scratch
@@ -104,10 +99,10 @@ python train.py --resume checkpoints/EQAGNN_latest.pt --epochs 20
 EQAGNN-PPIS/
 ├── main/
 │   ├── Dataset/           # Fasta files
-│   │   ├── Train_332.fa   # Training set (335 proteins)
-│   │   ├── Test_60.fa     # Test set 1 (60 proteins)
-│   │   ├── Test_315.fa    # Test set 2 (315 proteins)
-│   │   └── UBtest.fa      # Ubiquitin test set (31 proteins)
+│   │   ├── Train_332.fa   # Training set
+│   │   ├── Test_60.fa     # Test set 1
+│   │   ├── Test_315.fa    # Test set 2
+│   │   └── UBtest.fa      # Ubiquitin test set
 │   ├── Features/          # Pre-computed features
 │   │   ├── PSSM/         # L × 20 matrices
 │   │   ├── HMM/          # L × 20 matrices
@@ -116,7 +111,6 @@ EQAGNN-PPIS/
 │   ├── Input_adj/        # Adjacency matrices
 │   └── Res_positions/    # Residue position files
 ├── model_trained/        # Pre-trained models
-├── checkpoints/          # Training checkpoints
 └── results/              # Evaluation results
 ```
 
@@ -152,19 +146,6 @@ python train.py \
     --results_dir my_results
 ```
 
-### Training Arguments
-
-| Argument | Default | Description |
-|----------|---------|-------------|
-| `--epochs` | 50 | Number of training epochs |
-| `--val_dataset` | test_60 | Validation dataset (test_60/test_315/ubtest) |
-| `--lr` | 0.0005 | Initial learning rate |
-| `--batch_size` | 1 | Batch size for training |
-| `--num_workers` | 2 | Number of data loading workers |
-| `--early_stopping` | None | Early stopping patience |
-| `--resume` | None | Path to checkpoint to resume training |
-| `--exp_name` | EQAGNN | Experiment name for saving |
-
 ## 📊 Evaluation
 
 ### Testing Individual Datasets
@@ -177,27 +158,6 @@ python test.py --dataset test_60 --model_path path/to/model.pt
 python test.py --dataset test_315 --batch_size 2 --num_workers 4
 ```
 
-### Testing All Datasets
-
-```bash
-# Test all datasets with default models
-python test.py --dataset all --use_default_models
-
-# Test all datasets with custom model
-python test.py --dataset all --model_path path/to/model.pt
-```
-
-### Evaluation Metrics
-
-The evaluation script reports the following metrics:
-- **Accuracy**: Overall prediction accuracy
-- **F1 Score**: Harmonic mean of precision and recall
-- **Precision**: Positive predictive value
-- **Recall**: True positive rate (sensitivity)
-- **AUC**: Area under the ROC curve
-- **AUPR**: Area under the precision-recall curve
-- **MCC**: Matthews correlation coefficient
-
 ## 🎯 Pre-trained Models
 
 We provide pre-trained models for each test dataset:
@@ -208,25 +168,6 @@ We provide pre-trained models for each test dataset:
 | Best_EQAGNNModel_test_315_&_60.pt | Test_315 | [Download](model_trained/saved_models/Best_EQAGNNModel_test_315_&_60.pt) |
 | Best_EQAGNNModel_Ubtest.pt | UBtest | [Download](model_trained/saved_models/Best_EQAGNNModel_Ubtest.pt) |
 
-## 📈 Results
-
-### Performance on Test Datasets
-
-| Dataset | Accuracy | F1 Score | Precision | Recall | AUC | AUPR | MCC |
-|---------|----------|----------|-----------|--------|-----|------|-----|
-| Test_60 | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX |
-| Test_315 | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX |
-| UBtest_31 | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX | 0.XXX |
-
-## 🔧 Advanced Usage
-
-### Custom Feature Generation
-
-If you want to generate features for your own PDB files:
-
-```bash
-python generate_features.py --pdb_file your_protein.pdb --output_dir custom_features/
-```
 
 ### Batch Processing
 
