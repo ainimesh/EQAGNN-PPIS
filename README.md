@@ -164,7 +164,7 @@ We provide pre-trained models for each test dataset:
 | Model | Test Dataset | Download |
 |-------|--------------|----------|
 | Best_EQAGNNModel_test_60.pt | Test_60 | [Download](model_trained/saved_models/Best_EQAGNNModel_test_60.pt) |
-| Best_EQAGNNModel_test_315_&_60.pt | Test_315 | [Download](model_trained/saved_models/Best_EQAGNNModel_test_315_&_60.pt) |
+| Best_EQAGNNModel_test_315.pt | Test_315 | [Download](model_trained/saved_models/Best_EQAGNNModel_test_315_&_60.pt) |
 | Best_EQAGNNModel_Ubtest.pt | UBtest | [Download](model_trained/saved_models/Best_EQAGNNModel_Ubtest.pt) |
 
 

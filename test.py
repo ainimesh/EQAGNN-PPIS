@@ -82,7 +82,7 @@ DATASET_CONFIGS = {
         'data_file': 'Test_315.fa',
         'res_type': 'test_pdb_315_CA',
         'adj_type': '315_test_CA',
-        'default_model': 'model_trained/saved_models/Best_EQAGNNModel_test_60_&_315.pt'
+        'default_model': 'model_trained/saved_models/Best_EQAGNNModel_test_315.pt'
     },
     'ubtest': {
         'data_file': 'Ubtest.fa',  # Update this with correct filename
