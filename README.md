@@ -1,9 +1,13 @@
 # 🚀 E(Q)AGNN-PPIS
 
+<div align="center">
+
+[![Paper](https://img.shields.io/badge/Paper-IEEE-TSIPN%202025-blue)](https://www.biorxiv.org/content/10.1101/2024.10.06.616807v2)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-312/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.4.0-red.svg)](https://pytorch.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
+</div>
 This is the official implementation of **E(Q)AGNN-PPIS: Attention Enhanced Equivariant Graph Neural Network for Protein-Protein Interaction Site Prediction**
 
 ## 📑 Table of Contents
@@ -208,7 +212,7 @@ We thank the authors of the following tools and databases used in this work:
 - BLAST+ and UniRef90
 - HH-suite and Uniclust30
 - DSSP
-- PyTorch Geometric
+- [PyG](https://github.com/pyg-team/pytorch_geometric)
 
 ---
 
