@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Paper](https://img.shields.io/badge/Paper-IEEE_TSIPN%202025-blue)](https://ieeexplore.ieee.org/abstract/document/11077994)
+[![Paper](https://img.shields.io/badge/Paper-IEEE_TSIPN%202025-blue)](https://www.biorxiv.org/content/10.1101/2024.10.06.616807v2)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-312/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -187,16 +187,14 @@ bash run_experiments.sh
 If you use this code in your research, please cite:
 
 ```bibtex
-@ARTICLE{E(Q)AGNN-PPIS,
+@article{animesh2024eqagnn,
+  title={E(Q)AGNN-PPIS: Attention Enhanced Equivariant Graph Neural Network for Protein-Protein Interaction Site Prediction},
   author={Animesh and Suvvada, Rishi and Bhowmick, Plaban Kumar and Mitra, Pralay},
-  journal={IEEE Transactions on Signal and Information Processing over Networks}, 
-  title={E(Q)AGNN-PPIS: Attention Enhanced Equivariant Graph Neural Network for Protein-Protein Interaction Site Prediction}, 
-  year={2025},
-  volume={11},
-  number={},
-  pages={740-751},
-  doi={10.1109/TSIPN.2025.3587396}}
-
+  journal={bioRxiv},
+  pages={2024--10},
+  year={2024},
+  publisher={Cold Spring Harbor Laboratory}
+}
 ```
 
 ## 👥 Contact
