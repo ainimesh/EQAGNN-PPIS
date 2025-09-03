@@ -4,8 +4,12 @@
 
 [![Paper](https://img.shields.io/badge/Paper-IEEE_TSIPN%202025-blue)](https://ieeexplore.ieee.org/abstract/document/11077994)
 [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-312/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-3.0+-red.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+![GitHub Repo stars](https://img.shields.io/github/stars/ainimesh/EQAGNN-PPIS?style=social)
+![GitHub all releases](https://img.shields.io/github/downloads/ainimesh/EQAGNN-PPIS/total)
+
+
 
 </div>
 
