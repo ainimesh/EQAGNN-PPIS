@@ -7,7 +7,6 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-3.0+-red.svg)](https://pytorch.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ainimesh/EQAGNN-PPIS?style=social)
-![GitHub all releases](https://img.shields.io/github/downloads/ainimesh/EQAGNN-PPIS/total)
 
 
 
